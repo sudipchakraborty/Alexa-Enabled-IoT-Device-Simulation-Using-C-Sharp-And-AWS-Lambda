@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pb_light = new System.Windows.Forms.PictureBox();
             this.txt_command = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,6 +43,9 @@
             this.txt_fan_speed = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.txt_receive_msg = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pb_light)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_night_lamp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_smart_bulb)).BeginInit();
@@ -61,7 +65,7 @@
             // 
             this.txt_command.Location = new System.Drawing.Point(79, 242);
             this.txt_command.Name = "txt_command";
-            this.txt_command.Size = new System.Drawing.Size(238, 20);
+            this.txt_command.Size = new System.Drawing.Size(121, 20);
             this.txt_command.TabIndex = 1;
             this.txt_command.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_command_KeyDown);
             // 
@@ -183,12 +187,36 @@
             this.label7.TabIndex = 4;
             this.label7.Text = "STATUS";
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // txt_receive_msg
+            // 
+            this.txt_receive_msg.Location = new System.Drawing.Point(272, 242);
+            this.txt_receive_msg.Name = "txt_receive_msg";
+            this.txt_receive_msg.Size = new System.Drawing.Size(275, 20);
+            this.txt_receive_msg.TabIndex = 6;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(269, 223);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(104, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Received from AWS";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(574, 281);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.txt_receive_msg);
             this.Controls.Add(this.txt_fan_speed);
             this.Controls.Add(this.txt_fan_status);
             this.Controls.Add(this.label7);
@@ -208,6 +236,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alexa Enabled Virtual IoT Device V1.0";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_light)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_night_lamp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_smart_bulb)).EndInit();
@@ -232,6 +261,9 @@
         private System.Windows.Forms.TextBox txt_fan_speed;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TextBox txt_receive_msg;
+        private System.Windows.Forms.Label label8;
     }
 }
 

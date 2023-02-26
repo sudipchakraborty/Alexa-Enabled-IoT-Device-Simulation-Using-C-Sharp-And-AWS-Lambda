@@ -1,12 +1,23 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 using M2Mqtt;
 using M2Mqtt.Messages;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+//From Nuget package manager add the below packages to run the MQTT module
+//    a.	M2Mqtt by Paolo Patierno
+//    b.	M2MqttClientDotnetcore by M2MqttClientDotnetCore1.0.1
+//    c.	Plt.M2Mqtt by Prolucid Technologies
+//    d.	Newtonsoft.Json by James Newton-King 
+///////////////////////
 namespace Tools
 {
     public class AWS_MQTT_Client
@@ -17,6 +28,7 @@ namespace Tools
         public string Received_Message = "";
         public bool connected = false;
         public bool subscribed=false;
+        public bool received=false;
         MqttClient client;
         public string value="";
         string jsonState;
@@ -32,8 +44,10 @@ namespace Tools
         {
             try
             {
-                var caCert = X509Certificate.CreateFromCertFile(Path.Join(AppContext.BaseDirectory, "AmazonRootCA1.pem"));
-                var clientCert = new X509Certificate2(Path.Join(AppContext.BaseDirectory, "device_certificate.cert.pfx"), password);
+                string path = Path.Combine(System.IO.Directory.GetCurrent‌​Directory(), "..\\..\\AmazonRootCA1.pem");
+                var caCert = X509Certificate.CreateFromCertFile(path);
+                path = Path.Combine(System.IO.Directory.GetCurrent‌​Directory(), "..\\..\\device_certificate.cert.pfx");
+                var clientCert = new X509Certificate2(path, password);
 
                 client = new MqttClient(iotEndpoint, brokerPort, true, caCert, clientCert, MqttSslProtocols.TLSv1_2);
 
@@ -55,6 +69,7 @@ namespace Tools
         private  void IotClient_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             Received_Message=Encoding.UTF8.GetString(e.Message);
+            received=true;
         }
 
         private  void IotClient_MqttMsgSubscribed(object sender, MqttMsgSubscribedEventArgs e)
@@ -96,9 +111,12 @@ namespace Tools
             }
         }
 
-
-
-
+        public string Get_Data(string param="command")
+        {
+            dynamic jsonDe = JsonConvert.DeserializeObject(Received_Message);
+            string s= jsonDe.state.desired[param].ToString();
+            return s;
+        }
 
 
 

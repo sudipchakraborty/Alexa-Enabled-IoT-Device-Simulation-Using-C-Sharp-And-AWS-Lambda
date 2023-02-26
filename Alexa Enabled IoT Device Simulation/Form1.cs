@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Tools;
+
+
 namespace Alexa_Enabled_IoT_Device_Simulation
 {
     public partial class Form1 : Form
     {
+        AWS_MQTT_Client client=new AWS_MQTT_Client();
         public Form1()
         {
             InitializeComponent();
+            
         }
 
         private void txt_command_KeyDown(object sender, KeyEventArgs e)
@@ -86,12 +91,20 @@ namespace Alexa_Enabled_IoT_Device_Simulation
              
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            client.connect();
+        }
 
-
-
-
-
-
-
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if(client.received)
+            {
+                string s = client.Get_Data("command");
+                txt_receive_msg.Text=s;
+                Trigger_Load(s);
+                client.received=false;
+            }
+        }
     }
 }
